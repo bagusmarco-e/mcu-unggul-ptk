@@ -112,7 +112,7 @@ footer{max-width:1240px;margin:0 auto;padding:0 max(5vw,16px) 40px;font-size:13p
 <body>
 <header>
 <div class="top">
-<div class="brand"><img src="logo.png" alt="Unggul"><h1>Annual MCU 2026<small>PT Unggul Dinamika Utama · Site PTK · 2–5 Desember 2026</small></h1></div>
+<div class="brand"><img src="logo.png" alt="Unggul"><h1>Annual MCU 2026<small>PT Unggul Dinamika Utama · Site PTK · 14–17 Desember 2026</small></h1></div>
 <div class="who" id="who">Menghubungkan…</div>
 </div>
 <nav id="nav">
@@ -193,7 +193,7 @@ footer{max-width:1240px;margin:0 auto;padding:0 max(5vw,16px) 40px;font-size:13p
 </div>
 <details class="card sec" id="bulkBox">
 <summary>Impor peserta tambahan dari Excel</summary>
-<p class="hint"><b>Cara 1 — unggah file</b> .xlsx / .xls / .csv dengan baris judul (template Data Peserta MCU Intibios juga bisa). Kolom yang dibaca: <b>NIK, NAMA, TANGGAL LAHIR, POSISI/JABATAN, DEPARTEMEN, PAKET, UMUR/USIA</b>, serta <b>HARI</b> (2–5) dan <b>GELOMBANG</b> (1–4) bila ada. Paket boleh ditulis GW / MC / OP atau nama paketnya.</p>
+<p class="hint"><b>Cara 1 — unggah file</b> .xlsx / .xls / .csv dengan baris judul (template Data Peserta MCU Intibios juga bisa). Kolom yang dibaca: <b>NIK, NAMA, TANGGAL LAHIR, POSISI/JABATAN, DEPARTEMEN, PAKET, UMUR/USIA</b>, serta <b>HARI</b> (14–17 atau hari ke-1–4) dan <b>GELOMBANG</b> (1–4) bila ada. Paket boleh ditulis GW / MC / OP atau nama paketnya.</p>
 <div id="jenisBox" class="hide"><label for="bulkJenis">Impor sebagai</label><select id="bulkJenis"><option value="Tambahan">Peserta tambahan</option><option value="Data MCU">Data MCU utama (daftar peserta resmi)</option></select></div>
 <div class="btns" style="margin-top:10px"><label class="filebtn" for="bulkFile">Pilih file Excel</label><input id="bulkFile" type="file" accept=".xlsx,.xls,.csv" class="hide"></div>
 <p class="hint sec"><b>Cara 2 — salin-tempel</b> dari Excel, satu karyawan per baris: <b>NIK, Nama, Jabatan, Paket, Usia, Tanggal lahir</b> (boleh ditambah Hari dan Gelombang). Departemen mengikuti pilihan di form.</p>
@@ -268,7 +268,7 @@ footer{max-width:1240px;margin:0 auto;padding:0 max(5vw,16px) 40px;font-size:13p
 const SB_URL='https://qejajujqluxzlywllhsp.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFlamFqdWpxbHV4emx5d2xsaHNwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUzNzM5ODUsImV4cCI6MjExMDk0OTk4NX0.-WKdsoLdDFKHtjCPyXHBUZPsVUU7v0zaLq4tetFXVK8';
 const sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
-const HARI=[{k:'2',d:'2026-12-02',t:'Rabu, 2 Des'},{k:'3',d:'2026-12-03',t:'Kamis, 3 Des'},{k:'4',d:'2026-12-04',t:'Jumat, 4 Des'},{k:'5',d:'2026-12-05',t:'Sabtu, 5 Des'}];
+const HARI=[{k:'14',d:'2026-12-14',t:'Senin, 14 Des'},{k:'15',d:'2026-12-15',t:'Selasa, 15 Des'},{k:'16',d:'2026-12-16',t:'Rabu, 16 Des'},{k:'17',d:'2026-12-17',t:'Kamis, 17 Des'}];
 const GEL=[{k:'1',t:'07.00'},{k:'2',t:'08.00'},{k:'3',t:'09.00'},{k:'4',t:'10.00'}];
 const PAKET=[{k:'GW',t:'General Worker'},{k:'MC',t:'Mechanic / Maintenance Critical'},{k:'OP',t:'Operator Hauler & A2B'}];
 const STAT=['Terdaftar','Hadir','Selesai','Tidak hadir'];
@@ -324,7 +324,7 @@ const dateOf=iso=>iso?new Date(iso).toLocaleDateString('en-CA',{timeZone:TZ}):''
 const todayD=()=>new Date().toLocaleDateString('en-CA',{timeZone:TZ});
 const qrText=p=>'MCU26:'+p.nik;
 function qrSvg(text,cell){try{if(typeof qrcode!=='function')return'';const q=qrcode(0,'M');q.addData(text);q.make();return q.createSvgTag(cell||4,8)}catch{return''}}
-const ageAt=d=>{if(!d)return 0;const [y,m,dd]=d.split('-').map(Number);let a=2026-y;if(12<m||(m===12&&2<dd))a--;return a};
+const ageAt=d=>{if(!d)return 0;const [y,m,dd]=d.split('-').map(Number);let a=2026-y;if(12<m||(m===12&&14<dd))a--;return a};
 function alertBox(t){msg('#global',t,true);setTimeout(()=>msg('#global',''),6000)}
 function saveFile(filename,data){const type=/\.pdf$/.test(filename)?'application/pdf':/\.xlsx$/.test(filename)?'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':'text/html';
  const url=URL.createObjectURL(new Blob([data],{type}));const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000)}
@@ -379,7 +379,7 @@ function fillSelects(){
  opts('#fltHari',[{v:'',t:'Semua jadwal'},{v:'-',t:'Belum dijadwalkan'},...HARI.map(x=>({v:x.k,t:x.t}))],$('#fltHari').value);
  opts('#jDept',[{v:'',t:'Semua departemen'},...dl],isHR?$('#jDept').value:myDept);
  opts('#jPaket',[{v:'',t:'Semua paket'},...PAKET.map(p=>({v:p.k,t:p.t}))],$('#jPaket').value);
- opts('#jHari',hOpts,$('#jHari').value||'2');fillJGel();}
+ opts('#jHari',hOpts,$('#jHari').value||'14');fillJGel();}
 function fillGel(){const h=$('#fHari').value,cur=$('#fGel').value;
  if(!h){opts('#fGel',[{v:'',t:'—'}],'');$('#fGel').disabled=true;return}
  $('#fGel').disabled=false;
@@ -492,7 +492,7 @@ function normPaket(v,jab){v=String(v||'').toUpperCase().trim();
  if(!v&&jab){const j=String(jab).toLowerCase();if(/operator|driver/.test(j))return'OP~';if(/mechanic|mekanik|welder|tyre|tire|electric|fitter|lube|maintenance/.test(j))return'MC~';return'GW~'}return''}
 function normDept(v){v=String(v||'').trim();if(!v)return'';const L=v.toLowerCase();if(/management system/.test(L))return depts().find(d=>/msdi/i.test(d))||v;if(/supply chain|scm/.test(L))return depts().find(d=>/supply/i.test(d))||v;
  return depts().find(d=>d.toLowerCase()===L)||depts().find(d=>L.includes(d.toLowerCase())||d.toLowerCase().includes(L))||v}
-const normHari=v=>{const m=String(v??'').match(/(^|\D)0?([2-5])(\D|$)/);return m?m[2]:''};
+const normHari=v=>{if(typeof v==='number'&&v>40000&&typeof XLSX!=='undefined'){const d=XLSX.SSF.parse_date_code(v);return d&&d.m===12&&d.d>=14&&d.d<=17?String(d.d):''}if(v instanceof Date)return String(v.getDate());const s=String(v??'');let m=s.match(/(^|\D)(1[4-7])(\D|$)/);if(m)return m[2];m=s.match(/^\s*([1-4])\s*$/);return m?String(13+ +m[1]):''};
 const normGel=v=>{const m=String(v??'').match(/[1-4]/);return m?m[0]:''};
 const p2=n=>String(n).padStart(2,'0');
 function normTgl(v){if(v==null||v==='')return'';
@@ -593,7 +593,7 @@ function finishPdf(doc,title){const n=doc.getNumberOfPages(),W=doc.internal.page
  for(let i=1;i<=n;i++){doc.setPage(i);doc.setFillColor(30,77,43);doc.rect(0,0,W,20,'F');doc.setFillColor(201,162,39);doc.rect(0,20,W,1.2,'F');
   if(LOGO){doc.setFillColor(246,247,243);doc.roundedRect(10,4,38,12,2,2,'F');doc.addImage(LOGO,'PNG',12,5.2,34,10)}
   doc.setTextColor(246,247,243);doc.setFont('helvetica','bold');doc.setFontSize(13);doc.text(pdfTxt(title),54,10.5);
-  doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.text('PT Unggul Dinamika Utama - Site PTK - Annual MCU 2-5 Desember 2026 - Provider: Intibios',54,15.5);
+  doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.text('PT Unggul Dinamika Utama - Site PTK - Annual MCU 14-17 Desember 2026 - Provider: Intibios',54,15.5);
   doc.setTextColor(90,100,94);doc.setFontSize(8);doc.text('Dicetak '+nowTxt(),10,H-6);doc.text(`Halaman ${i} dari ${n}`,W-10,H-6,{align:'right'})}}
 const TBL={theme:'grid',headStyles:{fillColor:[30,77,43],textColor:[246,247,243],fontStyle:'bold'},styles:{fontSize:8.5,cellPadding:1.8,textColor:[22,36,27],lineColor:[220,227,218]},alternateRowStyles:{fillColor:[246,247,243]},margin:{top:27,left:10,right:10,bottom:14}};
 function secTitle(doc,t,y){doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(30,77,43);doc.text(pdfTxt(t),10,y);return y+3}
@@ -665,7 +665,7 @@ $('#sSave').addEventListener('click',async()=>{const d=$('#sDepts').value.split(
 
 // ---------- render all ----------
 function renderAll(){fillSelects();renderList();renderReport();renderCek();renderScan();}
-opts('#kHari',[...HARI.map(h=>({v:h.k,t:h.t})),{v:'-',t:'Belum dijadwalkan'}],'2');opts('#kGel',[{v:'',t:'Semua gelombang'},...GEL.map(g=>({v:g.k,t:'Gel. '+g.k+' · '+g.t}))],'');
+opts('#kHari',[...HARI.map(h=>({v:h.k,t:h.t})),{v:'-',t:'Belum dijadwalkan'}],'14');opts('#kGel',[{v:'',t:'Semua gelombang'},...GEL.map(g=>({v:g.k,t:'Gel. '+g.k+' · '+g.t}))],'');
 fillSettings();whoLine();renderAll();route();loadSettings();
 sb.channel('peserta-live').on('postgres_changes',{event:'*',schema:'public',table:'peserta'},()=>{if(staff())scheduleLoad()}).subscribe();
 setInterval(()=>{if(staff()&&!document.hidden)scheduleLoad(0)},30000);

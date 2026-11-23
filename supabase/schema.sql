@@ -38,7 +38,7 @@ create table if not exists public.peserta (
   usia           int  not null check (usia between 15 and 80),
   sumber         text not null default 'Tambahan' check (sumber in ('Data MCU','Tambahan')),
   status         text not null default 'Terdaftar' check (status in ('Terdaftar','Hadir','Selesai','Tidak hadir')),
-  hari           text check (hari in ('2','3','4','5')),
+  hari           text check (hari in ('14','15','16','17')),
   gel            text check (gel in ('1','2','3','4')),
   catatan        text default '',
   check_in_at    timestamptz,
@@ -245,3 +245,8 @@ language sql stable security definer set search_path = public as $$
 $$;
 revoke all on function public.isi_jadwal() from public;
 grant execute on function public.isi_jadwal() to authenticated;
+
+-- ---------- Migrasi: jadwal pindah ke 14–17 Desember 2026 ----------
+-- alter table public.peserta drop constraint if exists peserta_hari_check;
+-- update public.peserta set hari = (hari::int + 12)::text where hari in ('2','3','4','5');
+-- alter table public.peserta add constraint peserta_hari_check check (hari in ('14','15','16','17'));
