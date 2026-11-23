@@ -235,3 +235,13 @@ insert into public.pengaturan(id, kuota, target) values (1, 24, 373) on conflict
 insert into public.departemen(nama, target, urut) values
   ('Operation', 265, 1), ('Maintenance', 86, 2), ('Engineering', 20, 3), ('MSDI', 1, 4), ('Supply Chain Management', 1, 5)
 on conflict (nama) do nothing;
+
+-- ---------- Isi tiap gelombang (untuk sisa kuota, terlihat semua admin) ----------
+create or replace function public.isi_jadwal()
+returns table (hari text, gel text, n int)
+language sql stable security definer set search_path = public as $$
+  select hari, gel, count(*)::int from public.peserta
+   where hari is not null and status <> 'Tidak hadir' group by hari, gel
+$$;
+revoke all on function public.isi_jadwal() from public;
+grant execute on function public.isi_jadwal() to authenticated;
