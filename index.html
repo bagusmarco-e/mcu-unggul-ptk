@@ -272,7 +272,7 @@ const HARI=[{k:'14',d:'2026-12-14',t:'Senin, 14 Des'},{k:'15',d:'2026-12-15',t:'
 const GEL=[{k:'1',t:'07.00'},{k:'2',t:'08.00'},{k:'3',t:'09.00'},{k:'4',t:'10.00'}];
 const PAKET=[{k:'GW',t:'General Worker'},{k:'MC',t:'Mechanic / Maintenance Critical'},{k:'OP',t:'Operator Hauler & A2B'}];
 const STAT=['Terdaftar','Hadir','Selesai','Tidak hadir'];
-const DEF={kuota:24,target:373,depts:[['Operation',265],['Maintenance',86],['Engineering',20],['MSDI',1],['Supply Chain Management',1]]};
+const DEF={kuota:24,target:373,depts:[['Mine Operation',244],['Maintenance',105],['Engineering',13],['Health Safety Environment',6],['Human Resources General Affair',2],['Supply Chain Management',1],['Management System Development Integration',1],['Management',1]]};
 const isTamb=p=>p.sumber==='Tambahan';
 const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -490,7 +490,9 @@ function renderScan(){const d=todayD(),h=HARI.find(x=>x.d===d);
 function normPaket(v,jab){v=String(v||'').toUpperCase().trim();
  if(/^(GW|MC|OP)\b/.test(v))return v.slice(0,2);if(/GENERAL/.test(v))return'GW';if(/MECH|MEKANIK|MAINT|CRITICAL/.test(v))return'MC';if(/OPERAT|HAULER|A2B/.test(v))return'OP';
  if(!v&&jab){const j=String(jab).toLowerCase();if(/operator|driver/.test(j))return'OP~';if(/mechanic|mekanik|welder|tyre|tire|electric|fitter|lube|maintenance/.test(j))return'MC~';return'GW~'}return''}
-function normDept(v){v=String(v||'').trim();if(!v)return'';const L=v.toLowerCase();if(/management system/.test(L))return depts().find(d=>/msdi/i.test(d))||v;if(/supply chain|scm/.test(L))return depts().find(d=>/supply/i.test(d))||v;
+function normDept(v){v=String(v||'').trim();if(!v)return'';const L=v.toLowerCase();const al=[[/^(msdi|management system)/,/management system/i],[/^(scm|supply chain)/,/supply chain/i],[/^(hse|health safety)/,/health safety/i],[/^(hrga|hr ?ga|human resources)/,/human resources/i],[/^(mine )?operation$/,/mine operation/i]];
+ for(const [t,dr] of al)if(t.test(L))return depts().find(d=>dr.test(d))||v;
+ const ex=depts().find(d=>d.toLowerCase()===L);if(ex)return ex;
  return depts().find(d=>d.toLowerCase()===L)||depts().find(d=>L.includes(d.toLowerCase())||d.toLowerCase().includes(L))||v}
 const normHari=v=>{if(typeof v==='number'&&v>40000&&typeof XLSX!=='undefined'){const d=XLSX.SSF.parse_date_code(v);return d&&d.m===12&&d.d>=14&&d.d<=17?String(d.d):''}if(v instanceof Date)return String(v.getDate());const s=String(v??'');let m=s.match(/(^|\D)(1[4-7])(\D|$)/);if(m)return m[2];m=s.match(/^\s*([1-4])\s*$/);return m?String(13+ +m[1]):''};
 const normGel=v=>{const m=String(v??'').match(/[1-4]/);return m?m[0]:''};
